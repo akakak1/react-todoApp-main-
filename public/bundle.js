@@ -106,11 +106,11 @@
 	var TodoApp = __webpack_require__(223);
 
 	//Load foundation
-	__webpack_require__(227);
+	__webpack_require__(228);
 	$(document).foundation();
 
 	// App css
-	__webpack_require__(231);
+	__webpack_require__(232);
 
 	ReactDOM.render(React.createElement(TodoApp, null), document.getElementById('app'));
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
@@ -24908,6 +24908,7 @@
 	var React = __webpack_require__(8);
 	var TodoList = __webpack_require__(224);
 	var AddTodo = __webpack_require__(226);
+	var TodoSearch = __webpack_require__(227);
 
 	var TodoApp = React.createClass({
 	    displayName: 'TodoApp',
@@ -24915,6 +24916,8 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
+	            showCompleted: false,
+	            searchText: '',
 	            todos: [{
 	                id: 1,
 	                text: 'Walk the dog.'
@@ -24930,6 +24933,12 @@
 	    handleAddTodo: function handleAddTodo(text) {
 	        alert('new todo: ' + text);
 	    },
+	    handleSearch: function handleSearch(showCompleted, searchText) {
+	        this.setState({
+	            showCompleted: showCompleted,
+	            searchText: searchText
+	        });
+	    },
 	    render: function render() {
 	        var todos = this.state.todos;
 
@@ -24937,6 +24946,7 @@
 	        return React.createElement(
 	            'div',
 	            null,
+	            React.createElement(TodoSearch, { onSearch: this.handleSearch }),
 	            React.createElement(TodoList, { todos: todos }),
 	            React.createElement(AddTodo, { onAddTodo: this.handleAddTodo })
 	        );
@@ -25054,13 +25064,55 @@
 /* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	var React = __webpack_require__(8);
+
+	var TodoSearch = React.createClass({
+	    displayName: "TodoSearch",
+
+	    handleSearch: function handleSearch() {
+	        var showCompleted = this.refs.showCompleted.checked;
+	        var searchText = this.refs.searchText.value;
+
+	        this.props.onSearch(showCompleted, searchText);
+	    },
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            null,
+	            React.createElement(
+	                "div",
+	                null,
+	                React.createElement("input", { type: "search", ref: "searchText", placeholder: "Search todos", onChange: this.handleSearch })
+	            ),
+	            React.createElement(
+	                "div",
+	                null,
+	                React.createElement(
+	                    "label",
+	                    null,
+	                    React.createElement("input", { type: "checkbox", ref: "showCompleted", onChange: this.handleSearch }),
+	                    "Show completed todos"
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = TodoSearch;
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(228);
+	var content = __webpack_require__(229);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(230)(content, {});
+	var update = __webpack_require__(231)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -25077,10 +25129,10 @@
 	}
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(229)();
+	exports = module.exports = __webpack_require__(230)();
 	// imports
 
 
@@ -25091,7 +25143,7 @@
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports) {
 
 	/*
@@ -25147,7 +25199,7 @@
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -25401,16 +25453,16 @@
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(232);
+	var content = __webpack_require__(233);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(230)(content, {});
+	var update = __webpack_require__(231)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -25427,10 +25479,10 @@
 	}
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(229)();
+	exports = module.exports = __webpack_require__(230)();
 	// imports
 
 
