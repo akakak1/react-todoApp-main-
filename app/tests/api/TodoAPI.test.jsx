@@ -3,7 +3,7 @@ var expect = require('expect');
 var TodoAPI = require('TodoAPI');
 
 describe('TodoAPI', ()=> {
-    beforeEach(()=>{
+    beforeEach(()=> {
         localStorage.removeItem('todos');
     })
 
@@ -12,7 +12,7 @@ describe('TodoAPI', ()=> {
     })
 
     describe('setTodos', ()=> {
-        it('should set valid todos array', ()=>{
+        it('should set valid todos array', ()=> {
             var todos = [{
                 id:24,
                 text:'Testing api',
@@ -39,7 +39,7 @@ describe('TodoAPI', ()=> {
             expect(actualTodos).toEqual([]);
         })
 
-        it('should return todos if valid array in localstorage', ()=>{
+        it('should return todos if valid array in localstorage', ()=> {
             var todos = [{
                 id:35,
                 text:'Testing files',
@@ -69,14 +69,29 @@ describe('TodoAPI', ()=> {
             completed:true
         }];
 
-        it('should return all todos if showCompleted is true',()=>{
+        it('should return all todos if showCompleted is true',()=> {
             var filteredTodos = TodoAPI.filterTodos(todos, true, '');
             expect(filteredTodos.length).toBe(3);
         })
 
-        it('should return incompleted todos if showCompleted is false',()=>{
+        it('should return incompleted todos if showCompleted is false',()=> {
             var filteredTodos = TodoAPI.filterTodos(todos, false, '');
             expect(filteredTodos.length).toBe(1);
+        })
+
+        it('should sort by completed status', ()=> {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, '');
+            expect(filteredTodos[0].completed).toBe(false);
+        })
+
+        it('should filter todos by searchText', ()=> {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, 'first');
+            expect(filteredTodos.length).toBe(1);
+        })
+
+        it('should return all todos if searchText is empty', ()=> {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, '');
+            expect(filteredTodos.length).toBe(3);
         })
     })
 })
