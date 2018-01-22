@@ -51,4 +51,32 @@ describe('TodoAPI', ()=> {
             expect(actualTodos).toEqual(todos);
         })
     })
+
+    describe('filterTodos', ()=>{
+        var todos = [{
+            id:1,
+            text:'First todo',
+            completed:true
+        },
+        {
+            id:2,
+            text:'Second todo',
+            completed:false
+        },
+        {
+            id:3,
+            text:'Third todo',
+            completed:true
+        }];
+
+        it('should return all todos if showCompleted is true',()=>{
+            var filteredTodos = TodoAPI.filterTodos(todos, true, '');
+            expect(filteredTodos.length).toBe(3);
+        })
+
+        it('should return incompleted todos if showCompleted is false',()=>{
+            var filteredTodos = TodoAPI.filterTodos(todos, false, '');
+            expect(filteredTodos.length).toBe(1);
+        })
+    })
 })
