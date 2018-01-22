@@ -46842,6 +46842,13 @@
 
 
 	        var renderTodos = function renderTodos() {
+	            if (todos.length === 0) {
+	                return React.createElement(
+	                    'p',
+	                    { className: 'container__message' },
+	                    'ALL DONE'
+	                );
+	            }
 	            return todos.map(function (todo) {
 	                return React.createElement(Todo, _extends({ key: todo.id }, todo, { onToggle: onToggle }));
 	            });
@@ -46878,6 +46885,7 @@
 	            createdAt = _props.createdAt,
 	            completedAt = _props.completedAt;
 
+	        var todoClassName = completed ? 'todo todo-completed' : 'todo';
 
 	        var renderDate = function renderDate() {
 	            var message = 'Created ';
@@ -46896,17 +46904,25 @@
 
 	        return React.createElement(
 	            'div',
-	            { onClick: handleToggle },
-	            React.createElement('input', { type: 'checkbox', checked: completed }),
+	            { className: todoClassName, onClick: handleToggle },
 	            React.createElement(
-	                'p',
+	                'div',
 	                null,
-	                text
+	                React.createElement('input', { type: 'checkbox', checked: completed })
 	            ),
 	            React.createElement(
-	                'p',
+	                'div',
 	                null,
-	                renderDate()
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    text
+	                ),
+	                React.createElement(
+	                    'p',
+	                    { className: 'todo__subtext' },
+	                    renderDate()
+	                )
 	            )
 	        );
 	    }
@@ -47438,7 +47454,7 @@
 
 
 	// module
-	exports.push([module.id, ".container {\n  background: #fafafa;\n  border: 1px solid #eeeeee;\n  border-radius: 5px;\n  padding: 0;\n  margin-bottom: 2rem; }\n\n.container__header {\n  border-bottom: 1px solid #eeeeee;\n  padding: 1rem; }\n  .container__header label {\n    cursor: pointer;\n    font-size: 1rem; }\n  .container__header > :last-child {\n    display: flex;\n    align-items: center; }\n\n.container__footer {\n  border-top: 1px solid #eeeeee;\n  padding: 1rem 1rem 0 1rem; }\n\n.page-title {\n  text-align: center;\n  padding: 2rem 0;\n  margin: 0; }\n", ""]);
+	exports.push([module.id, ".container {\n  background: #fafafa;\n  border: 1px solid #eeeeee;\n  border-radius: 5px;\n  padding: 0;\n  margin-bottom: 2rem; }\n\n.container__header {\n  border-bottom: 1px solid #eeeeee;\n  padding: 1rem; }\n  .container__header label {\n    cursor: pointer;\n    font-size: 1rem; }\n  .container__header > :last-child {\n    display: flex;\n    align-items: center; }\n\n.container__message {\n  color: #aaa;\n  margin: 2rem auto;\n  text-align: center; }\n\n.container__footer {\n  border-top: 1px solid #eeeeee;\n  padding: 1rem 1rem 0 1rem; }\n\n.page-title {\n  text-align: center;\n  padding: 2rem 0;\n  margin: 0; }\n\n.todo {\n  cursor: pointer;\n  padding: 1rem;\n  display: flex;\n  align-items: center;\n  transition: background .3s ease; }\n  .todo p, .todo input {\n    margin: 0; }\n  .todo > :first-child {\n    margin-right: 1rem; }\n  .todo:hover {\n    background: #f0f0f0; }\n\n.todo__subtext {\n  color: #999; }\n\n.todo-completed p, .todo-completed .todo-subtext {\n  color: #aaa;\n  text-decoration: line-through; }\n", ""]);
 
 	// exports
 
