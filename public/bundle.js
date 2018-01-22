@@ -24973,9 +24973,26 @@
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(TodoSearch, { onSearch: this.handleSearch }),
-	            React.createElement(TodoList, { todos: filteredTodos, onToggle: this.handleToggle }),
-	            React.createElement(AddTodo, { onAddTodo: this.handleAddTodo })
+	            React.createElement(
+	                'h1',
+	                { className: 'page-title' },
+	                'Todo App'
+	            ),
+	            React.createElement(
+	                'div',
+	                { className: 'row' },
+	                React.createElement(
+	                    'div',
+	                    { className: 'column small-centered small-11 medium-6 large-5' },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'container' },
+	                        React.createElement(TodoSearch, { onSearch: this.handleSearch }),
+	                        React.createElement(TodoList, { todos: filteredTodos, onToggle: this.handleToggle }),
+	                        React.createElement(AddTodo, { onAddTodo: this.handleAddTodo })
+	                    )
+	                )
+	            )
 	        );
 	    }
 	});
@@ -46922,7 +46939,7 @@
 	    render: function render() {
 	        return React.createElement(
 	            'div',
-	            null,
+	            { className: 'container__footer' },
 	            React.createElement(
 	                'form',
 	                { onSubmit: this.handleSubmit },
@@ -46959,7 +46976,7 @@
 	    render: function render() {
 	        return React.createElement(
 	            "div",
-	            null,
+	            { className: "container__header" },
 	            React.createElement(
 	                "div",
 	                null,
@@ -47421,7 +47438,7 @@
 
 
 	// module
-	exports.push([module.id, "", ""]);
+	exports.push([module.id, ".container {\n  background: #fafafa;\n  border: 1px solid #eeeeee;\n  border-radius: 5px;\n  padding: 0;\n  margin-bottom: 2rem; }\n\n.container__header {\n  border-bottom: 1px solid #eeeeee;\n  padding: 1rem; }\n  .container__header label {\n    cursor: pointer;\n    font-size: 1rem; }\n  .container__header > :last-child {\n    display: flex;\n    align-items: center; }\n\n.container__footer {\n  border-top: 1px solid #eeeeee;\n  padding: 1rem 1rem 0 1rem; }\n\n.page-title {\n  text-align: center;\n  padding: 2rem 0;\n  margin: 0; }\n", ""]);
 
 	// exports
 
