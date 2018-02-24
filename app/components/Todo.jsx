@@ -1,10 +1,13 @@
 var React = require('react');
 var moment = require('moment');
 
+var {connect} = require('react-redux');   // note this connect will give us the dispatch and it will be available as props
+var actions = require('actions');
+
 var Todo = React.createClass({
     
     render: function(){
-        var {id, text, completed, onToggle, createdAt, completedAt} = this.props;
+        var {id, text, completed, onToggle, createdAt, completedAt, dispatch} = this.props;
         var todoClassName = completed ? 'todo todo-completed' : 'todo' ;
 
         var renderDate = ()=> {
@@ -18,12 +21,11 @@ var Todo = React.createClass({
             return message + moment.unix(timestamp).format('MMM Do YYYY @ h:mm a');
         }
 
-        function handleToggle(){
-                onToggle(id);
-        }
 
         return (
-            <div className={todoClassName} onClick={handleToggle}>
+            <div className={todoClassName} onClick={() => {
+                dispatch(actions.toggleTodo(id));        // dispacthing an action. 
+            }}>
                 <div>
                     <input type="checkbox" checked={completed} />
                 </div>
@@ -36,4 +38,4 @@ var Todo = React.createClass({
     }
 });
 
-module.exports = Todo;
+module.exports = connect()(Todo);  // note: the todo items are being passed down by the TodoList component so we dont nedd to get this from here.

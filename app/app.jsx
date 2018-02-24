@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var {Provider} = require('react-redux');   // this will allow the child components to access the store and call dispatch
 var {Route, Router, IndexRoute, hashHistory} = require('react-router'); // Object Destructuring
 
 var TodoApp = require('TodoApp');
@@ -27,6 +28,8 @@ require('style!css!sass!applicationStyles')
 
 
 ReactDOM.render(
-  <TodoApp/>,
+  <Provider store={store}>
+      <TodoApp/>           
+  </Provider>,
   document.getElementById('app')
 );
