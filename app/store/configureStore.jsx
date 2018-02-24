@@ -9,8 +9,8 @@ export var configure = () => {
     })
 
     var store = redux.createStore(reducer, redux.compose(
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    ));
+        window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f  //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    ));                                                                                       // will give error that cant read property apply of defined .  ( https://github.com/zalmoxisus/redux-devtools-extension/issues/320 )
 
 
     return store;    // dont miss this.

@@ -4,64 +4,28 @@ var TestUtils = require('react-addons-test-utils');
 var expect = require('expect');
 var $ = require('jquery');
 
+var {Provider} = require('react-redux');
+var configureStore = require('configureStore');
 var TodoApp = require('TodoApp');
+// var TodoList = require('TodoList');   here we are importing the TodoList but we want the default export form the TodoList so for this we have to use 'import'
+import TodoList from 'TodoList';   // Here we are using the default ... means the connected one.
 
 describe('TodoApp', ()=>{
     it('should exist', ()=>{
         expect(TodoApp).toExist();
-    })
+    });
 
-    describe('handleAddTodo', ()=>{
-        it('should add todo to the todos state when handleAddTodo', ()=> {
-            var todoApp = TestUtils.renderIntoDocument(<TodoApp/>);
-            var todoText = 'test text';
+    it('should render TodoList', () => {
+        var store = configureStore.configure();
+        var provider = TestUtils.renderIntoDocument(
+            <Provider store={store}>
+                <TodoApp/>
+            </Provider>
+        );
 
-            todoApp.setState({todos:[]});
-            todoApp.handleAddTodo(todoText);
+        var todoApp = TestUtils.scryRenderedComponentsWithType(provider, TodoApp)[0];
+        var todoList = TestUtils.scryRenderedComponentsWithType(todoApp, TodoList);
 
-            expect(todoApp.state.todos[0].text).toBe(todoText);
-            //Expect createdAt to be a number
-            expect(todoApp.state.todos[0].createdAt).toBeA('number');
-        })
-    })
-
-    describe('handleToggle', ()=> {
-        it('should toggle completed value from false to true when handleToggle called', ()=> {
-            var todoData = {
-                id:11,
-                text: 'Test features',
-                completed: false,
-                createdAt:100,
-                completedAt:undefined
-            }
-
-            var todoApp = TestUtils.renderIntoDocument(<TodoApp/>);
-            todoApp.setState({todos: [todoData]});
-
-            expect(todoApp.state.todos[0].completed).toBe(false);
-            todoApp.handleToggle(11);
-            expect(todoApp.state.todos[0].completed).toBe(true);
-            //Expect completedAt to be a number
-            expect(todoApp.state.todos[0].completedAt).toBeA('number');
-        })
-
-        it('should toggle completed value from true to false when handleToggle called', ()=> {
-            var todoData = {
-                id:11,
-                text: 'Test features',
-                completed: true,
-                createdAt:100,
-                completedAt:120
-            }
-
-            var todoApp = TestUtils.renderIntoDocument(<TodoApp/>);
-            todoApp.setState({todos: [todoData]});
-
-            expect(todoApp.state.todos[0].completed).toBe(true);
-            todoApp.handleToggle(11);
-            expect(todoApp.state.todos[0].completed).toBe(false);
-            //Expect completedAt to be undefined
-            expect(todoApp.state.todos[0].completedAt).toNotExist();
-        })
-    })
-})
+        expect(todoList.length).toEqual(1);
+    });
+});

@@ -4,7 +4,7 @@ var moment = require('moment');
 var {connect} = require('react-redux');   // note this connect will give us the dispatch and it will be available as props
 var actions = require('actions');
 
-var Todo = React.createClass({
+export var Todo = React.createClass({     //  we are exporting this just for the use of testing.
     
     render: function(){
         var {id, text, completed, onToggle, createdAt, completedAt, dispatch} = this.props;
@@ -38,4 +38,8 @@ var Todo = React.createClass({
     }
 });
 
-module.exports = connect()(Todo);  // note: the todo items are being passed down by the TodoList component so we dont nedd to get this from here.
+
+// Below we are exporting the reduxed component
+export default connect()(Todo);        // this is the default export (ie when someone does:  var somevar = require('Todo') .... this is the default)
+
+// module.exports = connect()(Todo);  // note: the todo items are being passed down by the TodoList component so we dont nedd to get this from here.

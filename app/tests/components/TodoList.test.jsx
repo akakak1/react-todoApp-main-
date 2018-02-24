@@ -4,38 +4,33 @@ var TestUtils = require('react-addons-test-utils');
 var expect = require('expect');
 var $ = require('jquery');
 
-var TodoList = require('TodoList');
+import ConnectedTodoList, {TodoList} from 'TodoList';   // the variables in {} will be non-default exports.. and the variables outside it will be default.
 var Todo = require('Todo');
 
-describe('TodoList', ()=>{
-    it('should exist', ()=>{
-        expect(TodoList).toExist();
-    })
+describe('TodoList', () => {
+  it('should exist', () => {
+    expect(TodoList).toExist();
+  });
 
-    describe('Render Todo', ()=>{
-        it('should render one Todo component for each todo item', ()=>{
-            var todos =[
-                {
-                    id:1,
-                    text:'Check mail'
-                },
-                {
-                    id:2,
-                    text:'Play game'
-                }
-            ]
-            var todoList = TestUtils.renderIntoDocument(<TodoList todos={todos}/>);
-            var todoComponents = TestUtils.scryRenderedComponentsWithType(todoList, Todo);  // VVI: pass todoList not TodoList as the first argument. (Else it will give some invariant error)
+  it('should render one Todo component for each todo item', () => {
+    var todos = [{
+      id: 1,
+      text: 'Do something'
+    }, {
+      id: 2,
+      text: 'Check mail'
+    }];
+    var todoList = TestUtils.renderIntoDocument(<TodoList todos={todos}/>);
+    var todosComponents = TestUtils.scryRenderedComponentsWithType(todoList, Todo);
 
-            expect(todoComponents.length).toBe(todos.length);
-        })
+    expect(todosComponents.length).toBe(todos.length);
+  });
 
-        it('should render a message if no todos', ()=>{
-            var todos =[];
-            var todoList = TestUtils.renderIntoDocument(<TodoList todos={todos}/>);
-            var $el = $(ReactDOM.findDOMNode(todoList));
+  it('should render empty message if no todos', () => {
+    var todos = [];
+    var todoList = TestUtils.renderIntoDocument(<TodoList todos={todos}/>);
+    var $el = $(ReactDOM.findDOMNode(todoList));
 
-            expect($el.find('.container__message').length).toBe(1);
-        })
-    })
-})
+    expect($el.find('.container__message').length).toBe(1);
+  });
+});

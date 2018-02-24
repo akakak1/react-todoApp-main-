@@ -2,7 +2,8 @@ var React = require('react');
 var uuid = require('node-uuid');
 var moment = require('moment');
 
-var TodoList =require('TodoList');
+
+import TodoList from 'TodoList';   // Here we are using the default export( means the connected one)
 var AddTodo = require('AddTodo');
 var TodoSearch = require('TodoSearch');
 var TodoAPI = require('TodoAPI');
