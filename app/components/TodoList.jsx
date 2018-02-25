@@ -1,11 +1,12 @@
 var React = require('react');
 var {connect} = require('react-redux');    // this function is a companion to the Provider, the connect() allows an individual component to connect to the store and get the required part of the state.
 import Todo from 'Todo';
+var TodoAPI =require('TodoAPI')
 
 export var TodoList = React.createClass({
 
     render: function(){
-        var {todos} = this.props;
+        var {todos, showCompleted, searchText} = this.props;   // note: here we are not specifying  this.props.state   ... how is it extracting the properties from the state object
 
         var renderTodos=()=> {
             if(todos.length === 0) {
@@ -13,7 +14,7 @@ export var TodoList = React.createClass({
                     <p className="container__message">ALL DONE</p>
                 )
             }
-            return todos.map((todo)=>{
+            return TodoAPI.filterTodos(todos, showCompleted, searchText).map((todo)=>{
                 return (
                     <Todo key={todo.id} {...todo}/>
                 )
@@ -29,8 +30,6 @@ export var TodoList = React.createClass({
 
 export default connect(
     (state) => {
-        return {
-            todos: state.todos   //  this todos array will be passed as props to the component.
-        }
+        return state   // here we need all the props of the 
     }
 )(TodoList); 

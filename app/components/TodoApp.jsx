@@ -5,7 +5,7 @@ var moment = require('moment');
 
 import TodoList from 'TodoList';   // Here we are using the default export( means the connected one)
 import AddTodo from 'AddTodo';
-var TodoSearch = require('TodoSearch');
+import TodoSearch from 'TodoSearch';   // here we want the one that is connected to the store  (ie the default )....
 var TodoAPI = require('TodoAPI');
 
 var TodoApp = React.createClass({
