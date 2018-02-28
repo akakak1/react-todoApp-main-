@@ -1,5 +1,11 @@
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 var expect = require('expect');
+
 var actions = require('actions');
+
+
+var createMockStore = configureMockStore([thunk]);   // configureMockStore() takes an array of middlewares as argument.
 
 
 describe('Action', () => {
@@ -14,6 +20,7 @@ describe('Action', () => {
         expect(res).toEqual(action);
     });
 
+
     it('should generate toggle show completed action', () => {
         var action = {
             type: 'TOGGLE_SHOW_COMPLETED',    // here we dont have comma in the action generator.... so what would happen if we use toBe() instead of toEqual() ;
@@ -24,16 +31,72 @@ describe('Action', () => {
         expect(res).toEqual(action);
     });
 
+
     it('should generate add todo action', () => {
         var action = {
             type: 'ADD_TODO',
-            text: 'Some todo'
+            todo: {
+                id: 'xyz123',
+                text: 'Anything',
+                completed: false,
+                createdAt: 0
+            }
         }
 
-        var res = actions.addTodo(action.text);
+        var res = actions.addTodo(action.todo);
 
         expect(res).toEqual(action);
     });
+
+
+
+    /////   Testing action that deals with async task   /////     
+    ///////////////////////////////////////////////////////////////////////////////
+
+    // This will give an error::::  Error: The "actual" argument in expect(actual).toInclude() must be an array or a string
+
+
+    // it('should create todo and dispatch ADD_TODO', (done) => {
+    //     const store = createMockStore({});
+    //     const todoText = 'My todo item';
+
+    //     store.dispatch(actions.startAddTodo(todoText)).then(() => {
+    //       const actions = store.getActions();
+
+
+        
+    //       expect(actions[0]).toInclude({             
+    //         type: 'ADD_TODO'
+    //       });
+    //       expect(actions[0].todo).toInclude({
+    //         text: todoText
+    //       })
+
+    //       done();
+    //     }).catch(done);
+    //   });
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
+
+    // Testing action that deals with async task
+    it('should create todo and dispatch ADD_TODO', (done) => {          // always use 'done' when dealing with async task.
+        const store = createMockStore({});     // here we are creating an empty store.
+        const todoText = 'Anything to do';
+
+        store.dispatch(actions.startAddTodo(todoText)).then(() => {
+            
+            const actions = store.getActions();                     // this will return an array of all the actions that got fired up in the store 
+            
+            expect(actions[0].type).toInclude('ADD_TODO');          // toInclude() is similar to toEqual();
+            expect(actions[0].todo.text).toInclude(todoText);
+            
+            done();             // once this is called, mocka tells the karma that the async task is done
+        }).catch(done);         // why use (done)  ??? not clearly explained.
+    });
+
+
 
 
     it('should generate add todos action object', () => {
@@ -52,7 +115,7 @@ describe('Action', () => {
 
         var res = actions.addTodos(todos);
         expect(res).toEqual(action);
-    })
+    });
 
 
     it('should genereate toggle todo action', () => {
@@ -64,5 +127,5 @@ describe('Action', () => {
         var res = actions.toggleTodo(action.id);
 
         expect(res).toEqual(action);
-    })
-})
+    });
+});

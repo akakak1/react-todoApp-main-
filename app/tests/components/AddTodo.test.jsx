@@ -4,6 +4,9 @@ var TestUtils = require('react-addons-test-utils');
 var expect = require('expect');
 var $ = require('jquery');
 
+
+//now we need to import actions for this .....because our action is created by a function and we are not creating our action explicitly
+import * as actions from 'actions';      // here all the exports are collected in the actions object ....  :) 
 var {AddTodo} = require('AddTodo');
 
 describe('AddTodo', ()=>{
@@ -15,11 +18,8 @@ describe('AddTodo', ()=>{
         it('should dispatch ADD_TODO when valid todo text', ()=> {
 
             var todoText = 'Check mail';
-            var action = {
-                type: 'ADD_TODO',
-                text: todoText
-            }
-
+            var action = actions.startAddTodo(todoText);      // NOTE: our action will be returned by startAddTodo()
+                                                              // DOUBT : where is the type property in the action returned by this function ???
             var spy = expect.createSpy();
             var addTodo = TestUtils.renderIntoDocument(<AddTodo dispatch={spy}/>);
 
