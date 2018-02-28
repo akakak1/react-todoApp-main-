@@ -1,3 +1,7 @@
+import firebase, {firebaseRef} from 'app/firebase/';   // app/firebase/index   ... we can remove if the file name is index.
+
+import moment from 'moment';
+
 export var setSearchText = (searchText) => {
     return {
         type: 'SET_SEARCH_TEXT',
@@ -13,11 +17,32 @@ export var toggleShowCompleted = () => {
 };
 
 
-export var addTodo = (text) => {
+export var addTodo = (todo) => {
     return {
         type: 'ADD_TODO',
-        text
-    }
+        todo
+    };
+};
+
+
+export var startAddTodo = (text) => {
+    return(dispatch, getState) => {                                       // the arguments are not clear.
+        var todo = {
+                text: text,                      // we can also use ES6
+                completed: false,
+                createdAt: moment().unix(),
+                completedAt: null              // we are not storing the completedAt in the database .... WHY ????
+        };
+
+        var todoRef = firebaseRef.child('todos').push(todo);
+
+        return todoRef.then(() => {                           // Here we are returning the promise so that we can chain it again
+            dispatch(addTodo({
+                ...todo,
+                id: todoRef.key
+            }));
+        });
+    };
 };
 
 
@@ -33,5 +58,5 @@ export var toggleTodo = (id) => {
     return {
         type: 'TOGGLE_TODO',
         id
-    }
-}
+    };
+};

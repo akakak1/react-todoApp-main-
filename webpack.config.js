@@ -28,6 +28,7 @@ module.exports= {
             './app/api'
         ],
         alias:{
+            app: 'app',                                // better option. Now we dont need to add specific code for each module in app folder and we can access them with this.
             applicationStyles:'app/styles/app.scss',
             actions: 'app/actions/actions.jsx',
             reducers: 'app/reducers/reducers.jsx',
