@@ -54,9 +54,24 @@ export var addTodos = (todos) => {   // this will add todos from local storage t
 };
 
 
-export var toggleTodo = (id) => {
+export var updateTodo = (id, updates) => {
     return {
-        type: 'TOGGLE_TODO',
-        id
+        type: 'UPDATE_TODO',
+        id,
+        updates
+    };
+};
+
+export var startToggleTodo = (id, completed) => {
+    return (dispatch, getState) => {
+        var todoRef = firebaseRef.child(`todos/${id}`);    // ES5 :  child('/todos' + id)
+        var updates = {
+            completed,
+            completedAt: completed ? moment().unix() : null
+        };
+
+        return todoRef.update(updates).then(() => {
+            dispatch(updateTodo(id, updates));
+        });
     };
 };
