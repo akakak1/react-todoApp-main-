@@ -1,4 +1,12 @@
-DOUBT ::::::::::
+environment variables are global variables that are set by our machine environment and they are available in various 
+programming languages and node can also it
 
 
-what is the use of the promises we are returning from every async actions ????????
+NODE_ENV is an environment variable lets us check the environment 
+
+run "NODE_ENV=production webpack" on Gitbash and we can see that ./public/bundle.js.map  is not generated
+
+Note:  NODE_ENV=production webpack -p   // p flag does more optimization
+
+
+Delete the bundle.js and bundle.js.map  and put it in the git ignore.

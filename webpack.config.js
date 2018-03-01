@@ -1,6 +1,10 @@
 
 var webpack = require('webpack');   // to get webpack utilities
 
+var path = require('path');
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';     // on HEROKU NODE_ENV will be set to 'production'
+
 module.exports= {
     entry: [
         'script!jquery/dist/jquery.min.js',
@@ -14,6 +18,11 @@ module.exports= {
         new webpack.ProvidePlugin({
             '$':'jquery',
             'jQuery':'jquery'
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compressor:{
+                warnings : false
+            }
         })
     ],
     output: {
@@ -47,5 +56,6 @@ module.exports= {
                 exclude:/(node_modules|bower_components)/
             }
         ]
-    }
+    },
+    devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-source-map'  // run "NODE_ENV=production webpack" on Gitbash and we can see that ./public/bundle.js.map  is not generated
 }
