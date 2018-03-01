@@ -54,6 +54,32 @@ export var addTodos = (todos) => {   // this will add todos from local storage t
 };
 
 
+export var startAddTodos = () => {
+    return (dispatch, getState) => {
+        var todosRef = firebaseRef.child('todos');
+
+        return todosRef.once('value').then((snapshot) => {
+            var todos = snapshot.val() || {};
+            // console.log(todos);   // this showed that todos is an object with subobjects ..... (NOTE: snapshot.val() represents the exact structure )
+            var parsedTodos = [];
+
+            Object.keys(todos).forEach((todoId) => {
+                parsedTodos.push({
+                    id: todoId,
+                    ...todos[todoId]      // why are we using [] ?? is todos an array ???  ANS =>...(once object is destructured it gives an associative array in which key of the property is the key for the  associative array.)
+                });
+            });
+
+            // console.log(parsedTodos);   // This showed that once object is destructured it gives an associative array in which key of the property is the key for the  associative array.
+
+
+            dispatch(addTodos(parsedTodos));
+
+        })
+    }
+}
+
+
 export var updateTodo = (id, updates) => {
     return {
         type: 'UPDATE_TODO',

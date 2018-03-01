@@ -113,14 +113,7 @@
 	var store = __webpack_require__(418).configure();
 	var TodoAPI = __webpack_require__(354);
 
-	store.subscribe(function () {
-	  var state = store.getState();
-	  console.log('New state', state);
-	  TodoAPI.setTodos(state.todos);
-	});
-
-	var initialTodos = TodoAPI.getTodos();
-	store.dispatch(actions.addTodos(initialTodos));
+	store.dispatch(actions.startAddTodos());
 
 	//Load foundation
 	__webpack_require__(421);
@@ -39661,7 +39654,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.startToggleTodo = exports.updateTodo = exports.addTodos = exports.startAddTodo = exports.addTodo = exports.toggleShowCompleted = exports.setSearchText = undefined;
+	exports.startToggleTodo = exports.updateTodo = exports.startAddTodos = exports.addTodos = exports.startAddTodo = exports.addTodo = exports.toggleShowCompleted = exports.setSearchText = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // app/firebase/index   ... we can remove if the file name is index.
 
@@ -39721,6 +39714,30 @@
 	    return {
 	        type: 'ADD_TODOS',
 	        todos: todos
+	    };
+	};
+
+	var startAddTodos = exports.startAddTodos = function startAddTodos() {
+	    return function (dispatch, getState) {
+	        var todosRef = _firebase.firebaseRef.child('todos');
+
+	        return todosRef.once('value').then(function (snapshot) {
+	            var todos = snapshot.val() || {};
+	            // console.log(todos);   // this showed that todos is an object with subobjects ..... (NOTE: snapshot.val() represents the exact structure )
+	            var parsedTodos = [];
+
+	            Object.keys(todos).forEach(function (todoId) {
+	                parsedTodos.push(_extends({
+	                    id: todoId
+	                }, todos[todoId]) // why are we using [] ?? is todos an array ???  ANS =>...(once object is destructured it gives an associative array in which key of the property is the key for the  associative array.)
+	                );
+	            });
+
+	            // console.log(parsedTodos);   // This showed that once object is destructured it gives an associative array in which key of the property is the key for the  associative array.
+
+
+	            dispatch(addTodos(parsedTodos));
+	        });
 	    };
 	};
 
@@ -40463,23 +40480,6 @@
 	var $ = __webpack_require__(7);
 
 	module.exports = {
-	    setTodos: function setTodos(todos) {
-	        if ($.isArray(todos)) {
-	            localStorage.setItem('todos', JSON.stringify(todos));
-	            return todos;
-	        }
-	    },
-
-	    getTodos: function getTodos() {
-	        var stringTodos = localStorage.getItem('todos');
-	        var todos = [];
-
-	        try {
-	            todos = JSON.parse(stringTodos);
-	        } catch (e) {}
-	        return $.isArray(todos) ? todos : [];
-	    },
-
 	    filterTodos: function filterTodos(todos, showCompleted, searchText) {
 	        var filteredTodos = todos;
 
