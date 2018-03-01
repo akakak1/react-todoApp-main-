@@ -6,15 +6,19 @@ var TodoAPI =require('TodoAPI')
 export var TodoList = React.createClass({
 
     render: function(){
+        
         var {todos, showCompleted, searchText} = this.props;   // note: here we are not specifying  this.props.state   ... how is it extracting the properties from the state object
 
         var renderTodos=()=> {
-            if(todos.length === 0) {
+            
+            var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
+
+            if(filteredTodos.length === 0) {
                 return (
                     <p className="container__message">ALL DONE</p>
                 )
             }
-            return TodoAPI.filterTodos(todos, showCompleted, searchText).map((todo)=>{
+            return filteredTodos.map((todo)=>{
                 return (
                     <Todo key={todo.id} {...todo}/>
                 )
@@ -32,4 +36,4 @@ export default connect(
     (state) => {
         return state   // here we need all the props of the 
     }
-)(TodoList); 
+)(TodoList);

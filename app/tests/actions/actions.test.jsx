@@ -64,7 +64,7 @@ describe('Action', () => {
 
     //     store.dispatch(actions.startAddTodo(todoText)).then(() => {
     //       const actions = store.getActions();
-
+    
 
         
     //       expect(actions[0]).toInclude({             
@@ -137,19 +137,25 @@ describe('Action', () => {
         var testTodoRef;
 
         beforeEach((done) => {
-            testTodoRef = firebaseRef.child('todos').push();
+            var todosRef = firebaseRef.child('todos');
 
-            testTodoRef.set({
-                text: 'Something to do',
-                completed: false,
-                createdAt: 1234
-            }).then(() => done())   // if there is just one line then we can remove braces .
+            todosRef.remove().then(() => {
+                testTodoRef = firebaseRef.child('todos').push();
 
+                return testTodoRef.set({
+                    text: 'Something to do',
+                    completed: false,
+                    createdAt: 123123
+                })
+            })
+            .then(() => done())      // this .then() is applied on the promise returned by set() but note that we are doing this on the outer function, thats possible because the promise of set() is returned from outer function
+            .catch(done) ;
         });
 
         afterEach((done) => {
-            testTodoRef.remove().then(() => done()) ;
-        });
+            testTodoRef.remove().then(() => done()) ;        // why not remove the entire todos ??   /// OOOOO::  if there is only one todo item then then todos array will also be deleted.
+        });                                                  // and note that we are adding only one todo in the beforeEach() and afterEach() we are deleting only one todo so its equivalent to delete the entire todos array.
+                                                              // NOTE: there is one more todo being added by one of the test above ...HOW TO deal with it ????
 
         it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
             const store = createMockStore({});
@@ -158,16 +164,36 @@ describe('Action', () => {
             store.dispatch(action).then(() => {
                 const mockActions = store.getActions();
 
-                expect(mockActions[0].type).toInclude('UPDATE_TODO');       // NOTE: toInclued is more flexible, with this we dont have to get the exact time to compare with completedAt.
-                expect(mockActions[0].id).toInclude(testTodoRef.key);
-                expect(mockActions[0].updates.completed).toInclude(true);
+
+                expect(mockActions[0].type).toEqual('UPDATE_TODO');       
+                expect(mockActions[0].id).toEqual(testTodoRef.key);
+                expect(mockActions[0].updates.completed).toEqual(true);
                 expect(mockActions[0].updates.completedAt).toExist();
 
+                //THIS WILL TIMEOUT ERROR //
+                // expect(mockActions[0].type).toInclude('UPDATE_TODO');       // NOTE: toInclued is more flexible, with this we dont have to get the exact time to compare with completedAt.
+                // expect(mockActions[0].id).toInclude(testTodoRef.key);
+                // expect(mockActions[0].updates.completed).toInclude(true);
+                // expect(mockActions[0].updates.completedAt).toExist();
+
                 done();
-
-
             }, done)      // this is the second argument for promise ... NOTE: its a function call.
-        });               // VVVI  :: dont use () 
-    });
+        });               // VVVI  :: dont use ()  // because i think that call to done will be made in the error handler itself ...
 
+
+        it('should populate todos and dispatch ADD_TODOS', (done) => {
+            const store = createMockStore({});
+            const action = actions.startAddTodos();
+
+            store.dispatch(action).then(() => {
+                const mockActions = store.getActions();
+
+                expect(mockActions[0].type).toEqual('ADD_TODOS');     // means this action must be generated ... 
+                expect(mockActions[0].todos.length).toEqual(1);
+                expect(mockActions[0].todos[0].text).toEqual('Something to do');
+
+                done();
+            }, done)
+        });
+    });
 });

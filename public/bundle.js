@@ -26441,14 +26441,17 @@
 	            searchText = _props.searchText; // note: here we are not specifying  this.props.state   ... how is it extracting the properties from the state object
 
 	        var renderTodos = function renderTodos() {
-	            if (todos.length === 0) {
+
+	            var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
+
+	            if (filteredTodos.length === 0) {
 	                return React.createElement(
 	                    'p',
 	                    { className: 'container__message' },
 	                    'ALL DONE'
 	                );
 	            }
-	            return TodoAPI.filterTodos(todos, showCompleted, searchText).map(function (todo) {
+	            return filteredTodos.map(function (todo) {
 	                return React.createElement(_Todo2.default, _extends({ key: todo.id }, todo));
 	            });
 	        };

@@ -1,6 +1,4 @@
-
-With react-redux we dont need to pass the callback function (or the handler) from the 
-very top (means form the parent component) to the very bottom ( means to the child component) instead the child
-components can call the dispatch 
+DOUBT ::::::::::
 
 
+what is the use of the promises we are returning from every async actions ????????
