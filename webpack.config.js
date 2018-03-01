@@ -1,9 +1,21 @@
 
 var webpack = require('webpack');   // to get webpack utilities
-
 var path = require('path');
+var envFile = require('node-env-file');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';     // on HEROKU NODE_ENV will be set to 'production'
+
+
+// NOTE: we are using try-catch so that if we try to include the file which is not present it will throw an error
+// also note that its going to happen on the heroku as there is no production file (also not that we are going to exclude the config folder from the production)
+try{
+    envFile(path.join(__dirname, 'config/' + process.env.NODE_ENV + '.env'));    // note: our file name is same as the environment name
+} catch (e) {
+
+}  
+// With the above code we will load all the variables in process.env 
+// till now only half work is done as these variables are only in the webpack and we want them in the bundle file.
+
 
 module.exports= {
     entry: [
@@ -22,6 +34,17 @@ module.exports= {
         new webpack.optimize.UglifyJsPlugin({
             compressor:{
                 warnings : false
+            }
+        }),
+        new webpack.DefinePlugin({                          // this plugin will help define variables in the bundle file.
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+                API_KEY: JSON.stringify(process.env.API_KEY),
+                AUTH_DOMAIN: JSON.stringify(process.env.AUTH_DOMAIN),
+                DATABASE_URL: JSON.stringify(process.env.DATABASE_URL),
+                STORAGE_BUCKET: JSON.stringify(process.env.STORAGE_BUCKET),
+                PROJECT_ID: JSON.stringify(process.env.PROJECT_ID),
+                MESSAGING_SENDER_ID: JSON.stringify(process.env.MESSAGING_SENDER_ID),
             }
         })
     ],

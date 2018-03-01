@@ -1,12 +1,17 @@
-environment variables are global variables that are set by our machine environment and they are available in various 
-programming languages and node can also it
+
+using NODE_ENV we customized the webpack depending on the environment it was running in.
+
+Now we will use Environment variables to specify different firebase database credentials depending on the environment.
 
 
-NODE_ENV is an environment variable lets us check the environment 
 
-run "NODE_ENV=production webpack" on Gitbash and we can see that ./public/bundle.js.map  is not generated
+NOTE ::::::::::::::::::::   WHEN running test   ::::::::::::::::::::::::
 
-Note:  NODE_ENV=production webpack -p   // p flag does more optimization
+in package.json: 
+"test": "NODE_ENV=test karma start"    // this doesnt work when we run : npm test 
+BUT
+"test": "kama start"    and setting  NODE_ENV=test with hand will work ....
+.....ie Do this:::::::::: NODE_ENV=test npm test   ::::::::::::   this will work :::::
+ALSO note:  if you dont set NODE_ENV=test then production database will be deleted 
 
-
-Delete the bundle.js and bundle.js.map  and put it in the git ignore.
+NOTE:::: from github :::  NODE_ENV=test doesnt work on WINDOWS.
