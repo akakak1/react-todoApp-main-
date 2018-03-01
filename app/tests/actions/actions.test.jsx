@@ -2,6 +2,8 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 var expect = require('expect');
 
+import firebase, {firebaseRef} from 'app/firebase/';
+
 var actions = require('actions');
 
 
@@ -118,14 +120,54 @@ describe('Action', () => {
     });
 
 
-    it('should genereate toggle todo action', () => {
+    it('should genereate update todo action', () => {
         var action = {
-            type: 'TOGGLE_TODO',
-            id: '123'
+            type: 'UPDATE_TODO',
+            id: '123',
+            updates: {completed: false}
         }
 
-        var res = actions.toggleTodo(action.id);
+        var res = actions.updateTodo(action.id, action.updates);
 
         expect(res).toEqual(action);
     });
+
+
+    describe('Tests with firebase todos', () => {
+        var testTodoRef;
+
+        beforeEach((done) => {
+            testTodoRef = firebaseRef.child('todos').push();
+
+            testTodoRef.set({
+                text: 'Something to do',
+                completed: false,
+                createdAt: 1234
+            }).then(() => done())   // if there is just one line then we can remove braces .
+
+        });
+
+        afterEach((done) => {
+            testTodoRef.remove().then(() => done()) ;
+        });
+
+        it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
+            const store = createMockStore({});
+            const action = actions.startToggleTodo(testTodoRef.key, true);
+
+            store.dispatch(action).then(() => {
+                const mockActions = store.getActions();
+
+                expect(mockActions[0].type).toInclude('UPDATE_TODO');       // NOTE: toInclued is more flexible, with this we dont have to get the exact time to compare with completedAt.
+                expect(mockActions[0].id).toInclude(testTodoRef.key);
+                expect(mockActions[0].updates.completed).toInclude(true);
+                expect(mockActions[0].updates.completedAt).toExist();
+
+                done();
+
+
+            }, done)      // this is the second argument for promise ... NOTE: its a function call.
+        });               // VVVI  :: dont use () 
+    });
+
 });
