@@ -103,6 +103,14 @@ export var startToggleTodo = (id, completed) => {
 };
 
 
+// This will be used to set the uid that will be used to identify separate users and display todos related to them.
+export var login = (uid) => {
+    return {
+        type: 'LOGIN',
+        uid
+    };
+};
+
 
 // These are async actions.......... NOTE: async actions returns a function instead of an object
 export var startLogin = () => {
@@ -112,6 +120,13 @@ export var startLogin = () => {
         }, (error) => {
             console.log('Unable to login', error);
         });
+    };
+};
+
+
+export var logout = () => {
+    return {
+        type: 'LOGOUT'
     };
 };
 

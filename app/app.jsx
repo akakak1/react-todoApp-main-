@@ -12,8 +12,10 @@ import router from 'app/router/';
 
 firebase.auth().onAuthStateChanged((user) => {     // the onAuthStateChanged()  will be called whenever there is a change in the auth status.
   if (user) {
+    store.dispatch(actions.login(user.uid));
     hashHistory.push('/todos');
   } else {
+    store.dispatch(actions.logout());
     hashHistory.push('/');
   }
 })

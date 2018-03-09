@@ -1,12 +1,13 @@
 import * as redux from 'redux';  // note: redux doesnt have default exports .... ?? but why did we remove require ??
 import thunk from 'redux-thunk';   // using thunk we can return functions from the action, and we can do things asynchronously.
-import {searchTextReducer, showCompletedReducer, todosReducer}  from 'reducers';
+import {searchTextReducer, showCompletedReducer, todosReducer, authReducer}  from 'reducers';
 
 export var configure = ( initialState = {}) => {
     var reducer = redux.combineReducers({
         searchText: searchTextReducer,
         showCompleted: showCompletedReducer,
-        todos: todosReducer
+        todos: todosReducer,
+        auth: authReducer
     })
 
     var store = redux.createStore(reducer, initialState, redux.compose(
