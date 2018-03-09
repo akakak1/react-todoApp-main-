@@ -33,8 +33,9 @@ export var startAddTodo = (text) => {
                 createdAt: moment().unix(),
                 completedAt: null              // we are not storing the completedAt in the database .... WHY ????
         };
-
-        var todoRef = firebaseRef.child('todos').push(todo);
+                                // getting the auth from the state.
+        var uid = getState().auth.uid; 
+        var todoRef = firebaseRef.child(`users/${uid}/todos`).push(todo);
 
         return todoRef.then(() => {                           // Here we are returning the promise so that we can chain it again
             dispatch(addTodo({
@@ -56,7 +57,9 @@ export var addTodos = (todos) => {   // this will add todos from local storage t
 
 export var startAddTodos = () => {
     return (dispatch, getState) => {
-        var todosRef = firebaseRef.child('todos');
+
+        var uid = getState().auth.uid;
+        var todosRef = firebaseRef.child(`users/${uid}/todos`);
 
         return todosRef.once('value').then((snapshot) => {
             var todos = snapshot.val() || {};
@@ -90,7 +93,8 @@ export var updateTodo = (id, updates) => {
 
 export var startToggleTodo = (id, completed) => {
     return (dispatch, getState) => {
-        var todoRef = firebaseRef.child(`todos/${id}`);    // ES5 :  child('/todos' + id)
+        var uid = getState().auth.uid;
+        var todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);    // ES5 :  child('/todos' + id)
         var updates = {
             completed,
             completedAt: completed ? moment().unix() : null

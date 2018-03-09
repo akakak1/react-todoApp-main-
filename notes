@@ -15,3 +15,10 @@ BUT
 ALSO note:  if you dont set NODE_ENV=test then production database will be deleted 
 
 NOTE:::: from github :::  NODE_ENV=test doesnt work on WINDOWS.
+
+
+
+NOTE: npm test erases the database .... fix it.
+
+
+flattenChildren()  error after lec 145
