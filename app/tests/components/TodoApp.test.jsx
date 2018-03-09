@@ -6,7 +6,7 @@ var $ = require('jquery');
 
 var {Provider} = require('react-redux');
 var configureStore = require('configureStore');
-var TodoApp = require('TodoApp');
+import {TodoApp} from 'TodoApp';
 // var TodoList = require('TodoList');   here we are importing the TodoList but we want the default export form the TodoList so for this we have to use 'import'
 import TodoList from 'TodoList';   // Here we are using the default ... means the connected one.
 

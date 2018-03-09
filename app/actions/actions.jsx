@@ -1,4 +1,4 @@
-import firebase, {firebaseRef} from 'app/firebase/';   // app/firebase/index   ... we can remove if the file name is index.
+import firebase, {firebaseRef, githubProvider} from 'app/firebase/';   // app/firebase/index   ... we can remove if the file name is index.
 
 import moment from 'moment';
 
@@ -101,3 +101,25 @@ export var startToggleTodo = (id, completed) => {
         });
     };
 };
+
+
+
+// These are async actions.......... NOTE: async actions returns a function instead of an object
+export var startLogin = () => {
+    return (dispatch, getState) => {
+        return firebase.auth().signInWithPopup(githubProvider).then((result)=> {         // we are returning the promise so that we can chain it in the tests !!!!
+            console.log('Auth worked', result);
+        }, (error) => {
+            console.log('Unable to login', error);
+        });
+    };
+};
+
+
+export var startLogout = () => {
+    return (dispatch, getState) => {
+        return firebase.auth().signOut().then(() => {
+            console.log('Logged out!');
+        });
+    }
+}
